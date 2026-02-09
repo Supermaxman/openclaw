@@ -1,0 +1,26 @@
+services:
+  openclaw-gateway:
+    build:
+      context: .
+      dockerfile: Dockerfile
+      args:
+        OPENCLAW_INSTALL_BROWSER: "1"
+    image: openclaw:custom
+    environment:
+      PATH: "/home/node/.local/bin:/home/node/.npm-global/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin"
+    volumes:
+      - openclaw-home:/home/node
+      - /srv/data/openclaw/config:/home/node/.openclaw
+      - /srv/data/openclaw/workspace:/home/node/.openclaw/workspace
+      - /home/max/Documents/Research:/home/node/.openclaw/workspace/obsidian-vault:ro
+  openclaw-cli:
+    image: openclaw:custom
+    environment:
+      PATH: "/home/node/.local/bin:/home/node/.npm-global/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin"
+    volumes:
+      - openclaw-home:/home/node
+      - /srv/data/openclaw/config:/home/node/.openclaw
+      - /srv/data/openclaw/workspace:/home/node/.openclaw/workspace
+      - /home/max/Documents/Research:/home/node/.openclaw/workspace/obsidian-vault:ro
+volumes:
+  openclaw-home:
