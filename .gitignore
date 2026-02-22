@@ -104,3 +104,22 @@ apps/ios/LocalSigning.xcconfig
 # Generated protocol schema (produced via pnpm protocol:gen)
 dist/protocol.schema.json
 .ant-colony/
+
+# Container home directory dotfiles (leaked when running inside container)
+/.bash_profile
+/.bashrc
+/.profile
+/.zprofile
+/.zshrc
+/.gitconfig
+/.ripgreprc
+/.mcp.json
+/.gitmodules
+/.claude/
+
+# Git bare repo internals (leaked from container volume mounts)
+/HEAD
+/config
+/hooks
+/objects
+/refs
