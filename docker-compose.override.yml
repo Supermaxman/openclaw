@@ -5,14 +5,29 @@ services:
       dockerfile: Dockerfile
       args:
         OPENCLAW_INSTALL_BROWSER: "1"
+        OPENCLAW_INSTALL_DOCKER_CLI: "1"
     image: openclaw:custom
+    cap_add:
+      - SYS_ADMIN
+      - NET_ADMIN
+      - MKNOD
+    security_opt:
+      - apparmor:unconfined
+      - seccomp:unconfined
     environment:
       PATH: "/home/node/.local/bin:/home/node/.npm-global/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin"
+    tmpfs:
+      - /run
+      - /run/lock
     volumes:
       - openclaw-home:/home/node
       - /srv/data/openclaw/config:/home/node/.openclaw
       - /srv/data/openclaw/workspace:/home/node/.openclaw/workspace
       - /home/max/Documents/Research:/home/node/.openclaw/workspace/obsidian-vault:ro
+      - openclaw-docker:/var/lib/docker
+    user: root
+    entrypoint: ["docker-entrypoint.sh"]
+    command: ["node", "openclaw.mjs", "gateway", "--allow-unconfigured"]
   openclaw-cli:
     image: openclaw:custom
     environment:
@@ -24,3 +39,4 @@ services:
       - /home/max/Documents/Research:/home/node/.openclaw/workspace/obsidian-vault:ro
 volumes:
   openclaw-home:
+  openclaw-docker:
