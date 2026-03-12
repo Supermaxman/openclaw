@@ -168,7 +168,7 @@ RUN --mount=type=cache,id=openclaw-bookworm-apt-cache,target=/var/cache/apt,shar
     DEBIAN_FRONTEND=noninteractive apt-get install -y --no-install-recommends \
       procps hostname curl git lsof openssl
 
-# Custom system packages: sudo, Brave, gh CLI, python3-pip
+# Custom: system packages (sudo, Brave browser, gh CLI, python3-pip)
 RUN apt-get update && apt-get install -y sudo python3-pip gnupg \
     && echo "node ALL=(ALL) NOPASSWD:ALL" >> /etc/sudoers \
     && curl -fsSL https://brave-browser-apt-release.s3.brave.com/brave-browser-archive-keyring.gpg | gpg --dearmor -o /usr/share/keyrings/brave-browser-archive-keyring.gpg \
@@ -179,7 +179,7 @@ RUN apt-get update && apt-get install -y sudo python3-pip gnupg \
     && apt-get install -y brave-browser gh \
     && apt-get clean && rm -rf /var/lib/apt/lists/*
 
-# Python packages
+# Custom: Python packages
 RUN pip3 install --no-cache-dir --break-system-packages \
     pandas openpyxl xlrd PyPDF2 python-docx \
     pdfplumber pypdf
@@ -281,29 +281,15 @@ RUN ln -sf /app/openclaw.mjs /usr/local/bin/openclaw \
 
 ENV NODE_ENV=production
 
-# Custom: system packages (sudo, Brave browser, gh CLI, python3-pip)
-RUN apt-get update && apt-get install -y sudo python3-pip gnupg \
-    && echo "node ALL=(ALL) NOPASSWD:ALL" >> /etc/sudoers \
-    && curl -fsSL https://brave-browser-apt-release.s3.brave.com/brave-browser-archive-keyring.gpg | gpg --dearmor -o /usr/share/keyrings/brave-browser-archive-keyring.gpg \
-    && echo "deb [signed-by=/usr/share/keyrings/brave-browser-archive-keyring.gpg] https://brave-browser-apt-release.s3.brave.com/ stable main" > /etc/apt/sources.list.d/brave-browser-release.list \
-    && curl -fsSL https://cli.github.com/packages/githubcli-archive-keyring.gpg | gpg --dearmor -o /usr/share/keyrings/githubcli-archive-keyring.gpg \
-    && echo "deb [arch=$(dpkg --print-architecture) signed-by=/usr/share/keyrings/githubcli-archive-keyring.gpg] https://cli.github.com/packages stable main" > /etc/apt/sources.list.d/github-cli.list \
-    && apt-get update \
-    && apt-get install -y brave-browser gh \
-    && apt-get clean && rm -rf /var/lib/apt/lists/*
-
-# Custom: Python packages
-RUN pip3 install --no-cache-dir --break-system-packages \
-    pandas openpyxl xlrd PyPDF2 python-docx \
-    pdfplumber pypdf
-
-# Custom: user tools (gog, toggl, claude, clawhub)
+# Custom: user tools (gog, toggl, claude, clawhub, sentry-cli, google workspace cli)
 RUN mkdir -p /home/node/.local/bin /home/node/.npm-global \
     && npm config set prefix '/home/node/.npm-global' \
     && curl -sL https://github.com/steipete/gogcli/releases/download/v0.9.0/gogcli_0.9.0_linux_amd64.tar.gz | tar xz -C /home/node/.local/bin \
     && npm install -g @beauraines/toggl-cli \
     && npm install -g @anthropic-ai/claude-code \
-    && npm install -g clawhub
+    && npm install -g clawhub \
+    && npm install -g @sentry/cli \
+    && npm install -g @googleworkspace/cli
 ENV PATH="/home/node/.local/bin:/home/node/.npm-global/bin:$PATH"
 
 # Security hardening: Run as non-root user
