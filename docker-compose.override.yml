@@ -24,6 +24,10 @@ services:
       - /srv/data/openclaw/config:/home/node/.openclaw
       - /srv/data/openclaw/workspace:/home/node/.openclaw/workspace
       - /home/max/Documents/Research:/home/node/.openclaw/workspace/obsidian-vault:ro
+      - /home/max/Documents/Research/Fleeting/Meetings:/home/node/.openclaw/workspace/obsidian-vault/Fleeting/Meetings:rw
+      - /home/max/Documents/Research/Background/Collaborators:/home/node/.openclaw/workspace/obsidian-vault/Background/Collaborators:rw
+      - /home/max/Documents/Research/Background/Organizations:/home/node/.openclaw/workspace/obsidian-vault/Background/Organizations:rw
+      - /home/max/Documents/Research/Work:/home/node/.openclaw/workspace/obsidian-vault/Work:rw
       - openclaw-docker:/var/lib/docker
     user: root
     entrypoint: ["docker-entrypoint.sh"]
@@ -37,6 +41,10 @@ services:
       - /srv/data/openclaw/config:/home/node/.openclaw
       - /srv/data/openclaw/workspace:/home/node/.openclaw/workspace
       - /home/max/Documents/Research:/home/node/.openclaw/workspace/obsidian-vault:ro
+      - /home/max/Documents/Research/Fleeting/Meetings:/home/node/.openclaw/workspace/obsidian-vault/Fleeting/Meetings:rw
+      - /home/max/Documents/Research/Background/Collaborators:/home/node/.openclaw/workspace/obsidian-vault/Background/Collaborators:rw
+      - /home/max/Documents/Research/Background/Organizations:/home/node/.openclaw/workspace/obsidian-vault/Background/Organizations:rw
+      - /home/max/Documents/Research/Work:/home/node/.openclaw/workspace/obsidian-vault/Work:rw
 volumes:
   openclaw-home:
   openclaw-docker:
