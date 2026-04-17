@@ -29,10 +29,16 @@ services:
       - /home/max/Documents/Research/Background/Organizations:/home/node/.openclaw/workspace/obsidian-vault/Background/Organizations:rw
       - /home/max/Documents/Research/Work:/home/node/.openclaw/workspace/obsidian-vault/Work:rw
       - openclaw-docker:/var/lib/docker
+    networks:
+      - default
+      - arr
     user: root
     entrypoint: ["docker-entrypoint.sh"]
     command: ["node", "openclaw.mjs", "gateway", "--allow-unconfigured"]
   openclaw-cli:
+    networks:
+      - default
+      - arr
     image: openclaw:custom
     environment:
       PATH: "/home/node/.local/bin:/home/node/.npm-global/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin"
@@ -45,6 +51,11 @@ services:
       - /home/max/Documents/Research/Background/Collaborators:/home/node/.openclaw/workspace/obsidian-vault/Background/Collaborators:rw
       - /home/max/Documents/Research/Background/Organizations:/home/node/.openclaw/workspace/obsidian-vault/Background/Organizations:rw
       - /home/max/Documents/Research/Work:/home/node/.openclaw/workspace/obsidian-vault/Work:rw
+networks:
+  arr:
+    external: true
+    name: arr_default
+
 volumes:
   openclaw-home:
   openclaw-docker:

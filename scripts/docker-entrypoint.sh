@@ -12,9 +12,11 @@ if command -v dockerd >/dev/null 2>&1; then
   fi
 
   # Rewrite /etc/resolv.conf so dockerd can resolve registry hostnames.
-  # The outer container's resolv.conf points to Docker's embedded DNS (127.0.0.11)
-  # which doesn't work for the inner daemon. Use public DNS instead.
+  # Keep Docker's embedded DNS (127.0.0.11) first for container name resolution
+  # on shared Docker networks, then fall back to public DNS for external lookups
+  # (needed by inner dockerd for registry pulls).
   cat > /etc/resolv.conf <<REOF
+nameserver 127.0.0.11
 nameserver 8.8.8.8
 nameserver 1.1.1.1
 REOF
