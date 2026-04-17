@@ -150,3 +150,22 @@ test/fixtures/openclaw-vitest-unit-report.json
 analysis/
 .artifacts/qa-e2e/
 extensions/qa-lab/web/dist/
+
+# Container home directory dotfiles (leaked when running inside container)
+/.bash_profile
+/.bashrc
+/.profile
+/.zprofile
+/.zshrc
+/.gitconfig
+/.ripgreprc
+/.mcp.json
+/.gitmodules
+/.claude/
+
+# Git bare repo internals (leaked from container volume mounts)
+/HEAD
+/config
+/hooks
+/objects
+/refs
